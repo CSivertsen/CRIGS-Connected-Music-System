@@ -11,7 +11,7 @@ class Song {
 
     if (songID != "0") {
       file = minim.loadFile(ID+".mp3");
-      meta = file.getMetaData();  
+      meta = file.getMetaData();
     }
   }
 
@@ -37,11 +37,49 @@ class Song {
       isPlaying = true;
     }
   }
-  
+
   void pause() {
-    if (isPlaying){
+    if (isPlaying) {
       file.pause();
       isPlaying = false;
+    }
+  }
+
+  int getPosition() {
+    if (songID != "0") {
+      return file.position();
+    } else {
+      return 0;
+    }
+  }
+
+  int getLength() {
+    if (songID != "0") {
+      return file.length();
+    } else {
+      return 0;
+    }
+  }
+  
+  boolean isPlaying() {
+    if (songID != "0") {
+      return file.isPlaying();
+    } else {
+      return false;
+    }
+  }
+  
+  float getGain() {
+    if (songID != "0") {
+      return file.getGain();
+    } else {
+      return 0;
+    }
+  }
+  
+  void setGain(float gain){
+    if (songID != "0"){
+      file.setGain(gain);
     }
   }
 }

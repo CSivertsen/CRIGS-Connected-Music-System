@@ -25,7 +25,7 @@ void setup(){
   SongInterfaces[2] = new SongInterface("Grace", 250, 50);*/  
   
    minim = new Minim(this);
-  
+     
 }
 
 void draw(){
@@ -56,6 +56,17 @@ void mouseClicked() {
   /*for (SongInterface SongInterface : SongInterfaces) {
     SongInterface.clickEvent();
   }*/
-  lastClick = millis();
+
   
+}
+
+void mousePressed() {
+    lastClick = millis();
+}
+
+void mouseWheel(MouseEvent event) {
+  float val = event.getCount();
+  for (MusicDevice device : devices) {
+    device.scrollEvent(val);
+  }  
 }
