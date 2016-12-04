@@ -1,10 +1,14 @@
+import ddf.minim.*;
 import nl.tue.id.oocsi.*;
 
 int numDevices = 3;
 int padding = 500;
 MusicDevice[] devices;
+Minim minim;
 
-Song songs[];
+long lastClick; 
+
+//SongInterface SongInterfaces[];
 
 void setup(){
   size(1900,600);
@@ -14,11 +18,13 @@ void setup(){
     devices[i] = new MusicDevice(width/6*2*i+100, height/5);  
   }
   
-  songs = new Song[3];
+  /*SongInterfaces = new SongInterface[3];
   
-  songs[0] = new Song("Toxic", 50, 50);
-  songs[1] = new Song("No Colour", 150, 50);
-  songs[2] = new Song("Grace", 250, 50);  
+  SongInterfaces[0] = new SongInterface("Toxic", 50, 50);
+  SongInterfaces[1] = new SongInterface("No Colour", 150, 50);
+  SongInterfaces[2] = new SongInterface("Grace", 250, 50);*/  
+  
+   minim = new Minim(this);
   
 }
 
@@ -30,9 +36,9 @@ void draw(){
     devices[i].display();
   }
   
-  for (Song song : songs) {
-    song.display();
-  }
+  /*for (SongInterface SongInterface : SongInterfaces) {
+    SongInterface.display();
+  }*/
   
 }
 
@@ -41,13 +47,15 @@ void mouseReleased() {
     device.releaseEvent();
   }
   
-  for (Song song : songs) {
-    song.releaseEvent();
-  }
+  /*for (SongInterface SongInterface : SongInterfaces) {
+    SongInterface.releaseEvent();
+  }*/
 }
 
 void mouseClicked() {
-  for (Song song : songs) {
-    song.clickEvent();
-  }
+  /*for (SongInterface SongInterface : SongInterfaces) {
+    SongInterface.clickEvent();
+  }*/
+  lastClick = millis();
+  
 }

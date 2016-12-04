@@ -11,20 +11,28 @@ class MusicDevice implements Connectable, Interactive {
   int deviceX;
   int deviceY;
   
-  MusicDevice(int x, int y) {
+  boolean isVirtual;
+  
+  MusicDevice(int x, int y, boolean _isVirtual) {
       
+     isVirtual = _isVirtual;
+     
+     if(isVirtual){
      deviceX = x;
      deviceY = y;
       
      myPlayerInterface = new PlayerInterface(deviceX,deviceY,deviceWidth, deviceHeight, this);
      myBackCatalogue = new BackCatalogue(deviceX, deviceY, deviceWidth, deviceHeight);
-     myPlaylistInterface = new PlaylistInterface(deviceX, deviceY, deviceWidth, deviceHeight, this);
+     myPlaylistInterface = new PlaylistInterface(deviceX, deviceY, deviceWidth, deviceHeight);
      myChannelChooser = new ChannelChooser(deviceX, deviceY, deviceWidth, deviceHeight);
      mySenderReceiver = new SenderReceiver(myChannelChooser); 
      
-     myPlaylist = new Playlist();
-     
      myChannelChooser.setSenderReceiver(mySenderReceiver);
+     
+     myPlaylist = new Playlist(); 
+     myPlaylistInterface.updatePlaylist(myPlaylist);
+     
+     }
   }
   
   public void display() {
@@ -44,7 +52,7 @@ class MusicDevice implements Connectable, Interactive {
     myPlayerInterface.update();
     myPlaylistInterface.update();
     myChannelChooser.update();
-    
+
     
       
   }
