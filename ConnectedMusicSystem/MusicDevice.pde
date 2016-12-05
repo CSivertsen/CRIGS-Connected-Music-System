@@ -1,12 +1,13 @@
 class MusicDevice implements Connectable, Interactive {
 
   PlayerInterface myPlayerInterface;
-  BackCatalogue myBackCatalogue;
   PlaylistInterface myPlaylistInterface;
   ChannelChooser myChannelChooser;
   SenderReceiver mySenderReceiver;
   Playlist myPlaylist;
   DisturbanceController myDisturbanceController;
+  DisturbanceGUI myDisturbanceGUI;
+  
   int deviceWidth = 300;
   int deviceHeight = 450;
   int deviceX;
@@ -18,8 +19,9 @@ class MusicDevice implements Connectable, Interactive {
     deviceY = y;
 
     myPlayerInterface = new PlayerInterface(deviceX, deviceY, deviceWidth, deviceHeight, this);
-    myBackCatalogue = new BackCatalogue(deviceX, deviceY, deviceWidth, deviceHeight);
     myPlaylistInterface = new PlaylistInterface(deviceX, deviceY, deviceWidth, deviceHeight, this);
+    myDisturbanceGUI = new DisturbanceGUI(deviceX, deviceY, deviceWidth, deviceHeight, this);
+    
     myChannelChooser = new ChannelChooser(deviceX, deviceY, deviceWidth, deviceHeight);
     mySenderReceiver = new SenderReceiver(myChannelChooser); 
     myDisturbanceController = new DisturbanceController(this);
@@ -35,15 +37,16 @@ class MusicDevice implements Connectable, Interactive {
     fill(255, 255, 255);
     rect(deviceX, deviceY, deviceWidth, deviceHeight);
     myPlayerInterface.display();
-    myBackCatalogue.display();
     myPlaylistInterface.display();
     myChannelChooser.display();
+    myDisturbanceGUI.display();
   }
 
   public void update() {
     myPlayerInterface.update();
     myPlaylistInterface.update();
     myChannelChooser.update();
+    myDisturbanceGUI.update();
   }
 
   public void releaseEvent() {
@@ -51,8 +54,14 @@ class MusicDevice implements Connectable, Interactive {
     myPlaylistInterface.releaseEvent();
     myChannelChooser.releaseEvent();
   }
+  
+  public void clickEvent() {
+    myPlaylistInterface.clickEvent();
+    myPlayerInterface.clickEvent();
+  }
 
   public void scrollEvent(float val) {
     myPlayerInterface.scrollEvent(val);
+    myDisturbanceGUI.scrollEvent(val);
   }
 }

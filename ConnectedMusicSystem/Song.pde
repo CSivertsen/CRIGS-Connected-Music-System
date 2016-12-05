@@ -4,7 +4,6 @@ class Song {
   AudioPlayer file; 
   AudioMetaData meta;
   String songID;
-  boolean isPlaying;
 
   Song(String ID) { 
     songID = ID;
@@ -34,14 +33,12 @@ class Song {
   void play() {
     if (songID != "0") {
       file.play();
-      isPlaying = true;
     }
   }
 
   void pause() {
-    if (isPlaying) {
+    if (isPlaying()) {
       file.pause();
-      isPlaying = false;
     }
   }
 

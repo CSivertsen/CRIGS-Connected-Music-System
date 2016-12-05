@@ -10,14 +10,14 @@ class PlaylistInterface implements Interactive {
   MusicDevice parentDevice;
 
   PlaylistInterface(int x, int y, int w, int h, MusicDevice device) {
-    
+
     PWidth = w/2;
     PHeight = h/3*2;
     Px = x;
     Py = y+h/3;
-    
+
     parentDevice = device;
-    
+
     steps = new ListStep[listLength];
 
     for (int i = 0; i < listLength; i++) {
@@ -33,7 +33,7 @@ class PlaylistInterface implements Interactive {
   }
 
   void update() {
-    
+
     containedPlaylist = parentDevice.myPlaylist;
 
     for (ListStep step : steps) {
@@ -46,6 +46,11 @@ class PlaylistInterface implements Interactive {
       step.releaseEvent();
     }
   }
+  void clickEvent() {
+    for (ListStep step : steps) {
+      step.clickEvent();
+    }
+  }
 
   class ListStep implements Interactive {
 
@@ -56,34 +61,37 @@ class PlaylistInterface implements Interactive {
     int LSy;
     int borderWidth = 2;
     int padding = 5;
+    int stepXOffset;
     boolean mouseOver;
 
     ListStep(int x, int y, int w, int h, int ID) {
-      
+
       listStepID = ID;
       LSWidth = w;
       LSHeight = h/listLength;
       LSx = x;
       LSy = y + LSHeight * listStepID;
-      
     }
 
     void display() {
 
       strokeWeight(borderWidth);
       stroke(255);
+      
+      fill(0);
+      rect(LSx, LSy, LSWidth-borderWidth, LSHeight-borderWidth);
+      
       if (mouseOver) {
         fill (130, 198, 224);
       } else {
         fill(110, 178, 204);
       }
-      rect(LSx, LSy, LSWidth-borderWidth, LSHeight-borderWidth);
-      
+      rect(LSx+stepXOffset, LSy, LSWidth-borderWidth, LSHeight-borderWidth);
+
       fill(255);
-      textAlign(LEFT,TOP);
-      text(containedPlaylist.getSong(listStepID+1).getTitle(), LSx+padding, LSy);
-      text(containedPlaylist.getSong(listStepID+1).getArtist(), LSx+padding, LSy+13);
-      
+      textAlign(LEFT, TOP);
+      text(containedPlaylist.getSong(listStepID+1).getTitle(), LSx+padding+stepXOffset, LSy);
+      text(containedPlaylist.getSong(listStepID+1).getArtist(), LSx+padding+stepXOffset, LSy+13);
     }
 
     void update() {
@@ -97,12 +105,21 @@ class PlaylistInterface implements Interactive {
 
     void releaseEvent() {
       //action
-      if(mouseOver && millis() - lastClick > 1500 ){
-        containedPlaylist.addSong(new Song(SongIdentificator.identifySong()),listStepID+1);
+      if (mouseOver && millis() - lastClick > 1500 ) {
+        containedPlaylist.addSong(new Song(SongIdentificator.identifySong()), listStepID+1);
       } else if ( mouseOver && millis() - lastClick < 1500) {
-        containedPlaylist.addSong(new Song("0"),listStepID+1);
-      } 
+        containedPlaylist.addSong(new Song("0"), listStepID+1);
+      }
+      
+      if(mouseOver){
+        stepXOffset = 0;
+      }
     }
 
+    void clickEvent() {
+      if (mouseOver) {
+        stepXOffset = -20;
+      }
+    }
   }
 }
