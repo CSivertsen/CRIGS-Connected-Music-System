@@ -29,25 +29,6 @@ class PlayerInterface implements Interactive {
 
     parentDevice = device;
 
-    //For testing
-  }
-
-  void playSong() {
-    if (currentSong != null) {
-      SongIsPlaying = true;
-    }
-  }
-
-  void stopSong() {
-    SongIsPlaying = false;
-  }
-
-  Song getSong() {
-    return currentSong;
-  }
-
-  void setSong(Song s) {
-    currentSong = s;
   }
 
   public void display() {

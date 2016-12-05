@@ -24,10 +24,6 @@ class PlaylistInterface implements Interactive {
       steps[i] = new ListStep(Px, Py, PWidth, PHeight, i);
     }
   }
-  
-  void updatePlaylist(Playlist incomingPlaylist){
-    containedPlaylist = incomingPlaylist;
-  }
 
   public void display() {
 
@@ -50,11 +46,6 @@ class PlaylistInterface implements Interactive {
       step.releaseEvent();
     }
   }
-  
-  void requestNext() {
-    
-  }
-
 
   class ListStep implements Interactive {
 
@@ -66,7 +57,6 @@ class PlaylistInterface implements Interactive {
     int borderWidth = 2;
     int padding = 5;
     boolean mouseOver;
-    Song currentSong; 
 
     ListStep(int x, int y, int w, int h, int ID) {
       
@@ -76,22 +66,6 @@ class PlaylistInterface implements Interactive {
       LSx = x;
       LSy = y + LSHeight * listStepID;
       
-    }
-    
-    boolean hasSong(){
-      if (currentSong != null) {
-        return true; 
-      } else {
-        return false; 
-      }
-    }
-    
-    Song getSong() {
-      return currentSong;
-    }
-    
-    void setSong( Song s ) {
-      currentSong = s; 
     }
 
     void display() {
