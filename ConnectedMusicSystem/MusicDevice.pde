@@ -5,6 +5,7 @@ class MusicDevice implements Connectable, Interactive {
   ChannelChooser myChannelChooser;
   SenderReceiver mySenderReceiver;
   Playlist myPlaylist;
+  Player myPlayer;
   DisturbanceController myDisturbanceController;
   DisturbanceGUI myDisturbanceGUI;
   
@@ -22,11 +23,11 @@ class MusicDevice implements Connectable, Interactive {
     myPlaylistInterface = new PlaylistInterface(deviceX, deviceY, deviceWidth, deviceHeight, this);
     myDisturbanceGUI = new DisturbanceGUI(deviceX, deviceY, deviceWidth, deviceHeight, this);
     
+    myPlaylist = new Playlist(this);
+    myPlayer = new Player(this);
     myChannelChooser = new ChannelChooser(deviceX, deviceY, deviceWidth, deviceHeight);
-    mySenderReceiver = new SenderReceiver(myChannelChooser); 
+    mySenderReceiver = new SenderReceiver(myChannelChooser, this); 
     myDisturbanceController = new DisturbanceController(this);
-
-    myPlaylist = new Playlist();
 
     myChannelChooser.setSenderReceiver(mySenderReceiver);
   }
@@ -47,6 +48,8 @@ class MusicDevice implements Connectable, Interactive {
     myPlaylistInterface.update();
     myChannelChooser.update();
     myDisturbanceGUI.update();
+    mySenderReceiver.update();
+    myPlayer.update();
   }
 
   public void releaseEvent() {

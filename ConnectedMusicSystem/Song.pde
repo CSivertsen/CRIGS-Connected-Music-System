@@ -1,21 +1,21 @@
 class Song {
 
-
   AudioPlayer file; 
   AudioMetaData meta;
   String songID;
+  boolean isPaused = true;
 
   Song(String ID) { 
     songID = ID;
 
-    if (songID != "0") {
-      file = minim.loadFile(ID+".mp3");
+    if (!songID.equals("0")) {
+      file = minim.loadFile(songID+".mp3");
       meta = file.getMetaData();
     }
   }
 
   String getTitle() {
-    if (songID != "0") { 
+    if (!songID.equals("0")) { 
       return meta.title();
     } else {
       return "";
@@ -23,27 +23,33 @@ class Song {
   }
 
   String getArtist() {
-    if (songID != "0") {
+    if (!songID.equals("0")) {
       return meta.author();
     } else {
       return "";
     }
   }
+  
+  void cue(int cue){
+    file.cue(cue);
+  }
 
   void play() {
-    if (songID != "0") {
+    if (!songID.equals("0")) {
       file.play();
+      isPaused = false;
     }
   }
 
   void pause() {
     if (isPlaying()) {
       file.pause();
+      isPaused = true;
     }
   }
 
   int getPosition() {
-    if (songID != "0") {
+    if (!songID.equals("0")) {
       return file.position();
     } else {
       return 0;
@@ -51,7 +57,7 @@ class Song {
   }
 
   int getLength() {
-    if (songID != "0") {
+    if (!songID.equals("0")) {
       return file.length();
     } else {
       return 0;
@@ -59,15 +65,19 @@ class Song {
   }
   
   boolean isPlaying() {
-    if (songID != "0") {
+    if (!songID.equals("0")) {
       return file.isPlaying();
     } else {
       return false;
     }
   }
   
+  boolean isPaused() {
+    return isPaused;
+  }
+  
   float getGain() {
-    if (songID != "0") {
+    if (!songID.equals("0")) {
       return file.getGain();
     } else {
       return 0;
@@ -75,7 +85,7 @@ class Song {
   }
   
   void setGain(float gain){
-    if (songID != "0"){
+    if (!songID.equals("0")){
       file.setGain(gain);
     }
   }

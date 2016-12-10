@@ -1,9 +1,11 @@
 import ddf.minim.*;
 import nl.tue.id.oocsi.*;
+import nl.tue.id.oocsi.client.behavior.*;
 
-int numDevices = 3;
+int numDevices = 1;
 int padding = 500;
 MusicDevice[] devices;
+//Move minim til MusicDevice;
 Minim minim;
 
 long lastClick; 
@@ -24,7 +26,7 @@ void draw(){
   background(150);
 
   for (int i = 0; i < numDevices; i++) {
-    devices[i].update();
+    devices[i].update(); //<>//
     devices[i].display();
   }
   

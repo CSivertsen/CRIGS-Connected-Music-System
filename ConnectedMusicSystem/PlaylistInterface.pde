@@ -106,9 +106,9 @@ class PlaylistInterface implements Interactive {
     void releaseEvent() {
       //action
       if (mouseOver && millis() - lastClick > 1500 ) {
-        containedPlaylist.addSong(new Song(SongIdentificator.identifySong()), listStepID+1);
+        containedPlaylist.addSong(new Song(SongIdentificator.identifySong()), listStepID+1, true);
       } else if ( mouseOver && millis() - lastClick < 1500) {
-        containedPlaylist.addSong(new Song("0"), listStepID+1);
+        containedPlaylist.addSong(new Song("0"), listStepID+1, true);
       }
       
       if(mouseOver){

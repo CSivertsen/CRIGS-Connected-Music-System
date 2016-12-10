@@ -1,27 +1,38 @@
 class Playlist {
-
+  
   Song[] songs;
   int listLength = 25;
+  MusicDevice parentDevice;
+  long lastEdited; 
 
-  Playlist() {
+  Playlist(MusicDevice device) {
 
     songs = new Song[listLength];
 
     for (int i = 0; i < songs.length; i++) {
       songs[i] = new Song("0");
     }
+    
+    parentDevice = device;
   }
-
+  
   Song getSong(int index) {
     return songs[index];
   }
-
-  void addSong(Song song, int index) {
+  
+  void addSong(Song song, int index, boolean shouldPush) {
     songs[index] = song;
+    if(parentDevice.mySenderReceiver.oocsi.isConnected() && shouldPush){
+      parentDevice.mySenderReceiver.addToPlaylist(song.songID, index);
+      println("Added songID " + song.songID + " to sharedPlaylist");
+    }
   }
 
   void removeSong(int index) {
     songs[index] = new Song("0");
+    if(parentDevice.mySenderReceiver.oocsi.isConnected()){
+      parentDevice.mySenderReceiver.addToPlaylist("0", index);
+    }
   }
 
   void swapSong(int index1, int index2) {
@@ -36,12 +47,18 @@ class Playlist {
     } 
     songs[songs.length-1] = new Song("0");
   }
+  
+  /*void update(){
+    for( int i = 0; i < parentDevice.mySenderReceiver.sharedIDPlaylist.length; i++ ) {
+      parentDevice.mySenderReceiver.setSong(i);
+    }
+  }*/
 
-  void merge(Playlist incomingPlaylist) {
+  /*void merge(Playlist incomingPlaylist) {
     for (int i = 0; i < this.songs.length; i++) {
       if (incomingPlaylist.songs[i] != null) {
         this.songs[i] = incomingPlaylist.songs[i];
       }
     }
-  }
+  }*/
 }

@@ -8,15 +8,12 @@ class PlayerInterface implements Interactive {
   int padding = 5;
   int stepXOffset;
   boolean mouseOver;
-  Song currentSong; 
   color defaultColor; 
   color inactiveColor; 
   color hoverColor; 
   MusicDevice parentDevice;
   float currentGain;
   float gainDisplayed;
-  
-
 
   PlayerInterface(int x, int y, int w, int h, MusicDevice device) {
 
@@ -48,10 +45,10 @@ class PlayerInterface implements Interactive {
     rect(Px+stepXOffset, Py, PWidth-borderWidth, PHeight-borderWidth);
 
     fill(255);
-    text(currentSong.getTitle(), Px+padding+stepXOffset, Py+padding);
-    text(currentSong.getArtist(), Px+padding+stepXOffset, Py+20);
+    text(parentDevice.myPlayer.currentSong.getTitle(), Px+padding+stepXOffset, Py+padding);
+    text(parentDevice.myPlayer.currentSong.getArtist(), Px+padding+stepXOffset, Py+20);
 
-    if (currentSong.isPlaying()) {
+    if (parentDevice.myPlayer.currentSong.isPlaying()) {
       noFill();
       strokeWeight(5);
       stroke(defaultColor);
@@ -72,29 +69,17 @@ class PlayerInterface implements Interactive {
     } else {
       mouseOver = false;
     }
-
-    //THIS SHOULD BE DONE IN THE PLAYER OR PLAYLIST NOT IN THE GUI
-    currentSong = parentDevice.myPlaylist.getSong(0);
-    if (currentSong.songID != "0" && !currentSong.isPlaying() && currentSong.getPosition() == 0) {
-      currentSong.setGain(currentGain); 
-      currentSong.play();
-      println(currentGain);
-      println("A song was started and gain was set");
-    }
-
-    if (currentSong.songID == "0") {
-      parentDevice.myPlaylist.advance();
-    }
+ 
   }
 
   void releaseEvent() {
 
     if (mouseOver && mouseButton == LEFT) {
-      currentSong.pause();
+      parentDevice.myPlayer.pause();
       if (millis() - lastClick > 1500 ) {
-        parentDevice.myPlaylist.addSong(new Song(SongIdentificator.identifySong()), 0);
+        parentDevice.myPlaylist.addSong(new Song(SongIdentificator.identifySong()), 0, true);
       } else if (millis() - lastClick < 1500) {
-        parentDevice.myPlaylist.addSong(new Song("0"), 0);
+        parentDevice.myPlaylist.addSong(new Song("0"), 0, true);
       }
       
       stepXOffset = 0 ;
@@ -105,10 +90,10 @@ class PlayerInterface implements Interactive {
     if (mouseOver && mouseButton == LEFT) {
       stepXOffset = -20;
     } else if (mouseOver && mouseButton == RIGHT) {
-      if (currentSong.isPlaying()){
-        currentSong.pause();
-      } else if (!currentSong.isPlaying()){
-        currentSong.play();
+      if (parentDevice.myPlayer.isPlaying()){
+        parentDevice.myPlayer.pause();
+      } else if (!parentDevice.myPlayer.isPlaying()){
+        parentDevice.myPlayer.play();
       }
     }
     
@@ -117,9 +102,9 @@ class PlayerInterface implements Interactive {
   void scrollEvent(float val) {
 
     if (mouseOver) {
-      currentGain = currentSong.getGain();
+      currentGain = parentDevice.myPlayer.getGain();
       currentGain += val;
-      currentSong.setGain(currentGain);    
+      parentDevice.myPlayer.setGain(currentGain);    
       println(currentGain);
     }
   }
