@@ -42,10 +42,13 @@ class Playlist {
   }
   
   void advance(){
-    for(int i = 0; i < listLength-1; i++){
+    
+    parentDevice.mySenderReceiver.advance();
+    
+    /*for(int i = 0; i < listLength-1; i++){
       songs[i] = songs[i+1];    
     } 
-    songs[songs.length-1] = new Song("0");
+    songs[songs.length-1] = new Song("0");*/
   }
   
   /*void update(){

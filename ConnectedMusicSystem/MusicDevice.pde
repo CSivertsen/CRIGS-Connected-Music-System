@@ -1,4 +1,4 @@
-class MusicDevice implements Connectable, Interactive {
+class MusicDevice implements Interactive {
 
   PlayerInterface myPlayerInterface;
   PlaylistInterface myPlaylistInterface;

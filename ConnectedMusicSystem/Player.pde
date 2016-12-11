@@ -33,7 +33,7 @@ class Player {
       println("A song was started and gain was set");
     }
     
-    if (!currentSong.isPlaying() && !currentSong.isPaused()){
+    if (!currentSong.isPlaying() && !currentSong.isPaused() && !waitingForPlay){
       
       parentDevice.myPlaylist.advance();
     }

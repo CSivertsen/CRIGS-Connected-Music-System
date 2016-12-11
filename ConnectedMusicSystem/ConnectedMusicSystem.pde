@@ -2,11 +2,12 @@ import ddf.minim.*;
 import nl.tue.id.oocsi.*;
 import nl.tue.id.oocsi.client.behavior.*;
 
-int numDevices = 1;
+int numDevices = 2;
 int padding = 500;
 MusicDevice[] devices;
 //Move minim til MusicDevice;
-Minim minim;
+  Minim minim;
+  
 
 long lastClick; 
 
@@ -18,7 +19,7 @@ void setup(){
     devices[i] = new MusicDevice(width/6*2*i+100, height/5);  
   }
  
-   minim = new Minim(this);
+    minim = new Minim(this);
      
 }
 

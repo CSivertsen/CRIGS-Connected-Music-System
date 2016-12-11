@@ -6,6 +6,8 @@ class Song {
   boolean isPaused = true;
 
   Song(String ID) { 
+
+    
     songID = ID;
 
     if (!songID.equals("0")) {
@@ -29,8 +31,8 @@ class Song {
       return "";
     }
   }
-  
-  void cue(int cue){
+
+  void cue(int cue) {
     file.cue(cue);
   }
 
@@ -63,7 +65,7 @@ class Song {
       return 0;
     }
   }
-  
+
   boolean isPlaying() {
     if (!songID.equals("0")) {
       return file.isPlaying();
@@ -71,11 +73,11 @@ class Song {
       return false;
     }
   }
-  
+
   boolean isPaused() {
     return isPaused;
   }
-  
+
   float getGain() {
     if (!songID.equals("0")) {
       return file.getGain();
@@ -83,9 +85,9 @@ class Song {
       return 0;
     }
   }
-  
-  void setGain(float gain){
-    if (!songID.equals("0")){
+
+  void setGain(float gain) {
+    if (!songID.equals("0")) {
       file.setGain(gain);
     }
   }
