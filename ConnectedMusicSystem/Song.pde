@@ -7,7 +7,6 @@ class Song {
 
   Song(String ID) { 
 
-    
     songID = ID;
 
     if (!songID.equals("0")) {

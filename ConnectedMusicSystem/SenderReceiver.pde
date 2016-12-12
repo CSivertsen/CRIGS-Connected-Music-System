@@ -1,4 +1,4 @@
-class SenderReceiver { //<>//
+public class SenderReceiver { //<>//
 
   OOCSI oocsi;
   OOCSIString[] sharedIDPlaylist = null;
@@ -15,7 +15,7 @@ class SenderReceiver { //<>//
 
   MusicDevice parentDevice;
 
-  SenderReceiver(ChannelChooser channelChooser, MusicDevice device) {
+  public SenderReceiver(ChannelChooser channelChooser, MusicDevice device) {
     parentDevice = device;
     numID = int(random(500, 999999));
     fullID = "CMS" + numID;
@@ -25,7 +25,7 @@ class SenderReceiver { //<>//
     resubscribe(channelChooser.getChannel());
   }
 
-  void resubscribe(int channelID) {
+  public void resubscribe(int channelID) {
 
     println("Subscribing");
     if (channelID == 0) {
@@ -43,22 +43,52 @@ class SenderReceiver { //<>//
     }
   }
 
-  void update() {
-
+  public void update() {
     syncPlaylists();
+    syncCue();
+  }
 
+  public void requestPlay() {
+    playRequested = true;
+  }
+
+  public void advance() {
+    /*println("Advancing shared playlist");
+     for (int i = 0; i < sharedIDPlaylist.length-1; i++) {
+     sharedIDPlaylist[i] = sharedIDPlaylist[i+1];
+     } 
+     sharedIDPlaylist[sharedIDPlaylist.length-1].set("0");*/
+  }  
+
+  public void pulse() {
+    println("pulse");
+    pulse = true;
+  }
+
+  public void handleOOCSIEvent(OOCSIEvent message) {
+    // print out all values in message
+    //println(message.keys());
+  }
+
+  public void addToPlaylist(String ID, int i) {
+    sharedIDPlaylist[i].set(ID);
+  }
+
+  public void syncCue() {
+    //println("Play requested? " + playRequested);
+    
     int currentSongPos = parentDevice.myPlayer.getPosition();
 
     if (currentSongPos > sharedSongPos.get()) { 
       println("Updating cue");
       sharedSongPos.set(parentDevice.myPlayer.getPosition());
     }
-     
+
     //For debugging
     if (os.isSynced()) {
       fill(255);
     }
-    
+
     if (pulse) {
       pulse = false;
       println("pulse");
@@ -79,39 +109,13 @@ class SenderReceiver { //<>//
     ellipse(sin(map(frames, 0, os.getResolution(), 0, TWO_PI) * 2) * 70 + parentDevice.deviceX-parentDevice.deviceWidth/2, cos(map(frames, 0, os.getResolution(), 0, TWO_PI)) * 70 + 100, 10, 10);
   }
 
-  void requestPlay() {
-    playRequested = true;
-  }
-
-  void advance() {
-    /*println("Advancing shared playlist");
-    for (int i = 0; i < sharedIDPlaylist.length-1; i++) {
-      sharedIDPlaylist[i] = sharedIDPlaylist[i+1];
-    } 
-    sharedIDPlaylist[sharedIDPlaylist.length-1].set("0");*/
-  }  
-
-  void pulse() {
-    println("pulse");
-    pulse = true;
-  }
-
-  void handleOOCSIEvent(OOCSIEvent message) {
-    // print out all values in message
-    //println(message.keys());
-  }
-
-  void addToPlaylist(String ID, int i) {
-    sharedIDPlaylist[i].set(ID);
-  }
-
-  void syncPlaylists() {
+  public void syncPlaylists() {
     if (oocsi.isConnected()) {
       for (int i = 0; i < parentDevice.myPlaylist.songs.length; i++) {
         String sharedSongID = sharedIDPlaylist[i].get();
         String localSongID = parentDevice.myPlaylist.songs[i].songID;
-        //println("Fetched sharedSongID " + sharedSongID + " at index " + i);
-        //println("Fetched localSongID " + localSongID + " at index " + i);
+        println("Fetched sharedSongID " + sharedSongID + " at index " + i);
+        println("Fetched localSongID " + localSongID + " at index " + i);
 
         if (!localSongID.equals(sharedSongID) && sharedSongID.equals("")) {
           //println("SharedPlaylist index " + i + " is unitialized - pushing id " + localSongID + " from local playlist");
