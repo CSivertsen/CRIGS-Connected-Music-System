@@ -1,7 +1,7 @@
 class Playlist {
   
   Song[] songs;
-  int listLength = 25;
+  int listLength = 11;
   MusicDevice parentDevice;
   long lastEdited; 
 
