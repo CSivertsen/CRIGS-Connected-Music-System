@@ -9,6 +9,11 @@ class SerialInterface {
   int oldChannelID;
   int oldVolumeLevel;
   int oldToleranceLevel;
+  int inChannelID;
+  int inVolumeLevel;
+  int inToleranceLevel;
+
+  boolean arduinoReady;
 
   MusicDevice parentDevice;
 
@@ -44,87 +49,92 @@ class SerialInterface {
   }
 
   void serialEvent(Serial myPort) {
-    if (myPort.available() > 0) {
-      // read a byte from the serial port:
-      String inString = myPort.readStringUntil(10);
-      println(inString);
+
+    // read a byte from the serial port:
+    String inString = myPort.readStringUntil('\n');
+    if (inString != null) {
+      //println(inString);
+      inString = trim(inString);
       // if this is the first byte received, and it's an A,
       // clear the serial buffer and note that you've
       // had first contact from the microcontroller. 
       // Otherwise, add the incoming byte to the array:
       if (firstContact == false) {
-        if (inString == "A") { 
+        if (inString.equals("A")) { 
           myPort.clear();          // clear the serial port buffer
           firstContact = true;     // you've had first contact from the microcontroller
-          myPort.write('A');       // ask for more
+          myPort.write("A");       // ask for more
           println("Had first contact");
+          readCycle = -1;
         }
-      } else if (inString == "S") { 
-
-        //myPort.write(parentDevice.myPlayer.currentSong.getArtist() + '\n');
-        //myPort.write(parentDevice.myPlayer.currentSong.getTitle() + '\n');
-        //myPort.write(parentDevice.myDisturbanceController.turnDownLevel + '\n');
-        myPort.write("Artist" + '\n');
-        myPort.write("Title" + '\n');
-        myPort.write("0" + '\n');   
+      } else if (inString.equals("S")) { 
+        println("Sending");
+        myPort.write(parentDevice.myPlayer.currentSong.getArtist() + '\n');
+        myPort.write(parentDevice.myPlayer.currentSong.getTitle() + '\n');
+        myPort.write(parentDevice.myDisturbanceController.turnDownLevel + '\n');
+        //myPort.write("Artist" + '\n');
+        //myPort.write("Title" + '\n');
+        //myPort.write("0" + '\n');   
         //Send a capital A to request new sensor readings:
         myPort.write("A" + '\n');
+        readCycle = -1;
       } else {
-        /*
-      // Add the latest byte from the serial port to array:
-         
-         if (readCycle == 0) {
-         Integer.parseInt(inString);
-         }
-         
-         // If we have 10 bytes:
-         if (serialCount > 2 ) {
-         for (int i = 0; i < 7; i++) {
-         if (serialInArray[i] == 1) {
-         if (wasOpen[i] == false) {
-         lastOpen[i] = millis();
-         wasOpen[i] = true;
-         }
-         } else if (serialInArray[i] == 0) {
-         if (wasOpen[i] == true) {
-         if (millis() - lastOpen[i] > 1500) {
-         //Add song via songIdentificator
-         } else {
-         //Add song zero
-         }
-         }
-         }
-         
-         int channelID = serialInArray[7];
-         int volumeLevel = serialInArray[8];
-         int toleranceLevel = serialInArray[9];
-         
-         if (oldChannelID != channelID) {
-         parentDevice.mySenderReceiver.resubscribe(channelID);
-         }
-         
-         if (oldVolumeLevel != volumeLevel) {
-         float gain = map(volumeLevel, 0, 255, -80, 20);
-         parentDevice.myPlayer.setGain(gain);
-         //Set volume to new level
-         }
-         
-         if (oldToleranceLevel != toleranceLevel) {
-         int tolerance = int(map(toleranceLevel, 0, 255, 0, 100));
-         parentDevice.myDisturbanceController.setTolerance(tolerance);
-         //Set tolerance to new level
-         }
-         
-         oldChannelID = channelID;
-         oldVolumeLevel = volumeLevel;
-         oldToleranceLevel = toleranceLevel;
-         }
-         */
 
-        // print the values (for debugging purposes only):
+        if (inString.equals("BEGIN")) {
+          readCycle = 0;
+        }
 
+        if (readCycle < 7) {
+          boolean bool = Boolean.parseBoolean(inString);
+          if (bool) {
+            if (wasOpen[readCycle] == false) {
+              lastOpen[readCycle] = millis();
+              wasOpen[readCycle] = true;
+            }
+          } else {
+            if (wasOpen[readCycle] == true) {
+              if (millis() - lastOpen[readCycle] > 1500) {
+                parentDevice.myPlaylist.addSong(new Song(SongIdentificator.identifySong()), readCycle, true);
+              } else {
+                parentDevice.myPlaylist.addSong(new Song("0"), readCycle, true);
+              }
+            }
+          }
+        } else if (readCycle == 7) {
+          inChannelID = Integer.parseInt(inString);
+        } else if (readCycle == 8) {
+          inVolumeLevel = Integer.parseInt(inString);
+        } else if (readCycle == 9) {
+          inToleranceLevel = Integer.parseInt(inString);
+        }
 
-        //readCycle++;
+        if (oldChannelID != inChannelID) {
+          println("Channel ID was changed");
+          parentDevice.mySenderReceiver.resubscribe(inChannelID);
+        }
+
+        if (oldVolumeLevel != inVolumeLevel) {
+          float gain = map(inVolumeLevel, 0, 255, -80, 20);
+          parentDevice.myPlayer.setGain(gain);
+          //Set volume to new level
+        }
+
+        if (oldToleranceLevel != inToleranceLevel) {
+          int tolerance = int(map(inToleranceLevel, 0, 255, 0, 100));
+          parentDevice.myDisturbanceController.setTolerance(tolerance);
+          //Set tolerance to new level
+        }
+
+        oldChannelID = inChannelID;
+        oldVolumeLevel = inVolumeLevel;
+        oldToleranceLevel = inToleranceLevel;
+      }
+      // print the values (for debugging purposes only):
+      println(readCycle + ": " + inString);
+      if (readCycle >= 9) {
+        readCycle = 0;
+      } else {
+        readCycle++;
       }
     }
   }

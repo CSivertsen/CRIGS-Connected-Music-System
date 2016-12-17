@@ -5,7 +5,7 @@ class DisturbanceController {
   
   //Set to 10 for testing purposes
   //int turnDownLevel = 10;
-  int turnDownLevel;
+  int turnDownLevel = 0;
   
   DisturbanceController(MusicDevice device) {
     parentDevice = device;  
