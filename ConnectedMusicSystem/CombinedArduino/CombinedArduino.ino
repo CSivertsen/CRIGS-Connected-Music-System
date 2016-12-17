@@ -107,13 +107,13 @@ void drawScreen(void) {
   display.setTextColor(WHITE);
   display.setCursor(0, 0);
   display.clearDisplay();
+  display.println(title);
+  display.println(artist);
+  //For debugging
   if (!slotsAreOpen[0]) {
-    display.println("Slot 1 is open");
-    display.println("lol");
-  }
-  else {
-    display.println(title);
-    display.println(artist);
+    display.println("Slot 1 is closed");
+  } else {
+    display.println("Slot 1 is open");  
   }
   display.display();
 }
