@@ -1,32 +1,40 @@
 import ddf.minim.*;
 import nl.tue.id.oocsi.*;
 import nl.tue.id.oocsi.client.behavior.*;
+import processing.serial.*;
 
-int numDevices = 2;
+int numVirtualDevices = 2;
 int padding = 500;
 MusicDevice[] devices;
 //Move minim til MusicDevice;
-  Minim minim;
-  
+Minim minim;
+Serial serial;
 
 long lastClick; 
 
 void setup(){
   size(1900,600);
-  devices = new MusicDevice[numDevices];
+  devices = new MusicDevice[numVirtualDevices+1];
   
-  for (int i = 0; i < numDevices; i++){
-    devices[i] = new MusicDevice(width/6*2*i+100, height/5);  
+  //Initiating first device with serialInterface
+  devices[0] = new MusicDevice(100, height/5, true);
+  
+  //Initiating virtual devices
+  for (int i = 1; i < devices.length; i++){
+    devices[i] = new MusicDevice(width/6*2*i+100, height/5, false);  
   }
  
     minim = new Minim(this);
-     
+    
+    String portName = Serial.list()[0];
+    serial = new Serial(this, portName, 9600);
+         
 }
 
 void draw(){
   background(150);
 
-  for (int i = 0; i < numDevices; i++) {
+  for (int i = 0; i < devices.length; i++) {
     devices[i].update(); //<>//
     devices[i].display();
   }
@@ -51,4 +59,8 @@ void mouseWheel(MouseEvent event) {
   for (MusicDevice device : devices) {
     device.scrollEvent(val);
   }  
+}
+
+void serialEvent(Serial event){
+  devices[0].mySerialInterface.serialEvent(event);
 }

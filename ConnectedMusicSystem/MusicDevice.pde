@@ -8,13 +8,16 @@ class MusicDevice implements Interactive {
   Player myPlayer;
   DisturbanceController myDisturbanceController;
   DisturbanceGUI myDisturbanceGUI;
+  SerialInterface mySerialInterface;
   
   int deviceWidth = 300;
   int deviceHeight = 450;
   int deviceX;
   int deviceY;
+  
+  boolean hasPhysical;
 
-  MusicDevice(int x, int y) {
+  MusicDevice(int x, int y, boolean hasPhysical) {
 
     deviceX = x;
     deviceY = y;
@@ -30,6 +33,10 @@ class MusicDevice implements Interactive {
     myDisturbanceController = new DisturbanceController(this);
 
     myChannelChooser.setSenderReceiver(mySenderReceiver);
+    
+    if(hasPhysical){
+    mySerialInterface = new SerialInterface(this);
+    }
   }
 
   public void display() {
@@ -50,6 +57,9 @@ class MusicDevice implements Interactive {
     myDisturbanceGUI.update();
     mySenderReceiver.update();
     myPlayer.update();
+    if(hasPhysical){
+      mySerialInterface.update();
+    }
   }
 
   public void releaseEvent() {
