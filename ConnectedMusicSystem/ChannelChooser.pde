@@ -6,7 +6,9 @@ class ChannelChooser implements Interactive {
   float CCy;
   color defaultColor;
   color hoverColor;
+  color activeHoverColor;
   color activeColor; 
+  color unactiveColor; 
   int channelID; 
   int oldChannelID;
   boolean isEditable;
@@ -15,7 +17,7 @@ class ChannelChooser implements Interactive {
 
   FlipSwitch[] switches;
   int numSwitches = 4;
-  
+
   SharingToggle sharingToggle;
 
   ChannelChooser(float x, float y, float w, float h) {
@@ -28,13 +30,15 @@ class ChannelChooser implements Interactive {
     defaultColor = color(255, 247, 107);
     hoverColor = color(255, 255, 127);
     activeColor = color(255, 210, 107);
+    activeHoverColor = color(255,216,127);
+    unactiveColor = color(150); 
 
     switches = new FlipSwitch[numSwitches];
 
     for (int i = 0; i < numSwitches; i++) {
       switches[i] = new FlipSwitch(CCx, CCy, CCWidth, CCHeight, i);
     }
-    
+
     sharingToggle = new SharingToggle(CCx, CCy, CCWidth, CCHeight);
   }
 
@@ -52,10 +56,8 @@ class ChannelChooser implements Interactive {
     for (int i = 0; i < numSwitches; i++) {
       switches[i].display();
     }
-    
+
     sharingToggle.display();
-    
-    
   }
 
   void update() {
@@ -70,14 +72,14 @@ class ChannelChooser implements Interactive {
     }
 
     channelID = tempID;
-    
+
     //println(wasConfirmed + " " + oldChannelID + " " + channelID);
     if (oldChannelID != channelID && wasConfirmed) {
       //println("ChannelChooser calls resubscribe");
       mySenderReceiver.resubscribe(channelID);
       wasConfirmed = false;
     }
-    
+
     sharingToggle.update();
   }
 
@@ -85,7 +87,7 @@ class ChannelChooser implements Interactive {
     for (FlipSwitch flipSwitch : switches) {
       flipSwitch.releaseEvent();
     }
-    
+
     sharingToggle.releaseEvent();
   }
 
@@ -130,17 +132,23 @@ class ChannelChooser implements Interactive {
     }
 
     void display() {
-      
+
       ellipseMode(CORNER);
       strokeWeight(borderWidth);
       stroke(255);
+      
       if (mouseOver) {
-        fill(hoverColor);
+        if (isOn) {
+          fill(activeHoverColor);
+        } else if (!isOn){
+          fill(hoverColor);
+        }
       } else if (isOn) {
         fill(activeColor);
       } else {
         fill(defaultColor);
       }
+          
       ellipse(stX, stY, stW-borderWidth, stH-borderWidth);
     }
   }
@@ -178,13 +186,25 @@ class ChannelChooser implements Interactive {
 
       strokeWeight(borderWidth);
       stroke(255);
-      if (mouseOver && isEditable) {
-        fill(hoverColor);
+      
+      if (!isEditable){
+        if (!isOn){
+          fill(unactiveColor);
+        } else {
+          fill(activeColor);
+        }
+      } else if (mouseOver){
+        if (isOn){
+          fill(activeHoverColor);
+        } else {
+          fill(hoverColor);
+        }
       } else if (isOn) {
         fill(activeColor);
       } else {
         fill(defaultColor);
       }
+      
       rect(FSx, FSy, FSWidth-borderWidth, FSHeight-borderWidth);
     }
 
@@ -201,7 +221,6 @@ class ChannelChooser implements Interactive {
       if (isEditable) {
         if (mouseOver && isOn == false) {
           isOn = true;
-          
         } else if (mouseOver && isOn == true) {
           isOn = false;
         }

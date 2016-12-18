@@ -29,7 +29,7 @@ class VolumeGUI implements Interactive {
 
     defaultColor = color(67, 147, 178); 
     hoverColor = color(119,180,204);
-    ringColor = color(255, 130, 155, 0.5); 
+    ringColor = color(255, 130, 155, 100); 
   }
 
   void update() {

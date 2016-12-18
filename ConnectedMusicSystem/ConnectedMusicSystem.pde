@@ -46,7 +46,7 @@ void setup(){
 void draw(){
   background(247, 243, 243);
   
-  image(logo, x, height*0.05);
+  image(logo, width*0.05, height*0.05);
   textSize(80);
   textFont(heading);
   fill(0);
