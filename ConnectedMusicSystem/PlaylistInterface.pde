@@ -6,14 +6,14 @@ class PlaylistInterface implements Interactive {
   int PHeight;
   int Px;
   int Py;
-  int listLength = 10;
+  int listLength = 6;
   MusicDevice parentDevice;
 
   PlaylistInterface(int x, int y, int w, int h, MusicDevice device) {
 
     PWidth = w/2;
     PHeight = h/3*2;
-    Px = x;
+    Px = x+w/2;
     Py = y+h/3;
 
     parentDevice = device;
@@ -118,7 +118,7 @@ class PlaylistInterface implements Interactive {
 
     void clickEvent() {
       if (mouseOver) {
-        stepXOffset = -20;
+        stepXOffset = 20;
       }
     }
   }

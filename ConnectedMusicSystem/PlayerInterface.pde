@@ -19,7 +19,7 @@ class PlayerInterface implements Interactive {
 
     PWidth = w/2;
     PHeight = h/6;
-    Px = x;
+    Px = x+w/2;
     Py = y+h/6;
 
     defaultColor = color(255, 130, 155); 
@@ -33,10 +33,10 @@ class PlayerInterface implements Interactive {
 
     strokeWeight(borderWidth);
     stroke(255);
-    
+
     fill(0);
     rect(Px, Py, PWidth-borderWidth, PHeight-borderWidth);
-    
+
     if (mouseOver) {
       fill (hoverColor);
     } else {
@@ -69,34 +69,32 @@ class PlayerInterface implements Interactive {
     } else {
       mouseOver = false;
     }
- 
   }
 
   void releaseEvent() {
 
     if (mouseOver && mouseButton == LEFT) {
-      parentDevice.myPlayer.pause();
+      parentDevice.myPlayer.pause(true);
       if (millis() - lastClick > 1500 ) {
         parentDevice.myPlaylist.addSong(new Song(SongIdentificator.identifySong()), 0, true);
       } else if (millis() - lastClick < 1500) {
         parentDevice.myPlaylist.addSong(new Song("0"), 0, true);
       }
-      
+
       stepXOffset = 0 ;
     }
   }
 
   void clickEvent() {
     if (mouseOver && mouseButton == LEFT) {
-      stepXOffset = -20;
+      stepXOffset = 20;
     } else if (mouseOver && mouseButton == RIGHT) {
-      if (parentDevice.myPlayer.isPlaying()){
-        parentDevice.myPlayer.pause();
-      } else if (!parentDevice.myPlayer.isPlaying()){
-        parentDevice.myPlayer.play();
+      if (parentDevice.myPlayer.isPlaying()) {
+        parentDevice.myPlayer.pause(true);
+      } else if (!parentDevice.myPlayer.isPlaying()) {
+        parentDevice.myPlayer.play(true);
       }
     }
-    
   }
 
   void scrollEvent(float val) {

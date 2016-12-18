@@ -14,7 +14,7 @@ class ChannelChooser implements Interactive {
   SenderReceiver mySenderReceiver; 
 
   FlipSwitch[] switches;
-  int numSwitches = 5;
+  int numSwitches = 4;
   
   SharingToggle sharingToggle;
 
@@ -22,7 +22,7 @@ class ChannelChooser implements Interactive {
 
     CCWidth = w/3;
     CCHeight = h/2;
-    CCx = x+w-CCWidth;
+    CCx = x-CCWidth;
     CCy = y+h-CCHeight;
 
     defaultColor = color(255, 247, 107);
@@ -62,7 +62,8 @@ class ChannelChooser implements Interactive {
     for (FlipSwitch flipSwitch : switches) {
       flipSwitch.update();
       if (flipSwitch.isOn()) {
-        tempID += pow(2, flipSwitch.getID());
+        //tempID += pow(2, flipSwitch.getID());
+        tempID++;
       }
     }
 

@@ -80,12 +80,9 @@ class SerialInterface {
         readCycle = -1;
       } else {
 
-        if (inString.equals("BEGIN")) {
-          readCycle = 0;
-        }
-
         if (readCycle < 7) {
-          boolean bool = Boolean.parseBoolean(inString);
+          boolean bool = "1".equals(inString);
+          
           if (bool) {
             if (wasOpen[readCycle] == false) {
               lastOpen[readCycle] = millis();
@@ -98,6 +95,7 @@ class SerialInterface {
               } else {
                 parentDevice.myPlaylist.addSong(new Song("0"), readCycle, true);
               }
+              wasOpen[readCycle] = false;
             }
           }
         } else if (readCycle == 7) {
@@ -130,7 +128,7 @@ class SerialInterface {
         oldToleranceLevel = inToleranceLevel;
       }
       // print the values (for debugging purposes only):
-      println(readCycle + ": " + inString);
+      //println(readCycle + ": " + inString);
       if (readCycle >= 9) {
         readCycle = 0;
       } else {

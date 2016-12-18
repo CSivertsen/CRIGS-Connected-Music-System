@@ -65,11 +65,3 @@ void mouseWheel(MouseEvent event) {
 void serialEvent(Serial event){
   //devices[0].mySerialInterface.serialEvent(event);
 }
-
-/*void handleOOCSIEvent(OOCSIEvent message){
-    for (MusicDevice device : devices) {
-    device.mySenderReceiver.handleOOCSIEvent(message);
-  }
-  
-  println("oocsi event in root");
-}*/

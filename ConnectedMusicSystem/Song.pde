@@ -32,7 +32,9 @@ class Song {
   }
 
   void cue(int cue) {
+  if (!songID.equals("0")) { 
     file.cue(cue);
+  }
   }
 
   void play() {

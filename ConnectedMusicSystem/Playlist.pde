@@ -24,7 +24,6 @@ class Playlist {
     songs[index] = song;
     if(parentDevice.mySenderReceiver.oocsi.isConnected() && shouldPush){
       parentDevice.mySenderReceiver.addToPlaylist(song.songID, index);
-      println("Added songID " + song.songID + " to sharedPlaylist");
     }
   }
 
@@ -42,7 +41,9 @@ class Playlist {
   }
   
   void advance(){
-    
+    /*if (shouldPush){
+      parentDevice.mySenderReceiver.sendAction("advance");
+    }*/
     parentDevice.mySenderReceiver.advance();
     
     /*for(int i = 0; i < listLength-1; i++){

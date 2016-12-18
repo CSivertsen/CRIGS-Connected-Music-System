@@ -40,6 +40,7 @@ int LDRvalues[4];
 int lightThreshold = 100;
 boolean ledsIsOn[4];
 boolean isRegistered[4];
+boolean blinking;
 
 int volumeLevel = 0;
 int toleranceLevel = 0;
@@ -113,7 +114,7 @@ void drawScreen(void) {
   if (!slotsAreOpen[0]) {
     display.println("Slot 1 is closed");
   } else {
-    display.println("Slot 1 is open");  
+    display.println("Slot 1 is open");
   }
   display.display();
 }
@@ -128,16 +129,28 @@ void channelSelection() {
       if (!ledsIsOn[i]) {
         pixels.setPixelColor(i, pixels.Color(0, 0, 0));
       } else {
+        pixels.setPixelColor(i, pixels.Color(50, 0, 0));
         countChannels++;
       }
     }
-   channelID = countChannels;
+    channelID = countChannels;
   } else {
- 
+
     for (int i = 0; i < NUMPIXELS; i++) {
       LDRvalues[i] = analogRead(LDRpins[i]);
       if (LDRvalues[i] < lightThreshold && !ledsIsOn[i] && !isRegistered[i] ) {
-        pixels.setPixelColor(i, pixels.Color(50, 0, 0));
+        if (millis() % 1000) {
+          if (blinking) {
+            blinking = false;
+          } else {
+            blinking = true;
+          }
+        }
+        if (blinking) {
+          pixels.setPixelColor(i, pixels.Color(30, 30, 30));
+        } else {
+          pixels.setPixelColor(i, pixels.Color(50, 0, 0));
+        }
         ledsIsOn[i] = true;
         isRegistered[i] = true;
         //Serial.print("Led ");

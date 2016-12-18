@@ -30,7 +30,7 @@ class DisturbanceGUI implements Interactive {
 
     dWidth = w/2;
     dHeight = w/2; 
-    dX = x+w/2;
+    dX = x;
     dY = y+h/6;
 
     parentDevice = device;
