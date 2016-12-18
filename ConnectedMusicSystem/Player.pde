@@ -18,6 +18,7 @@ class Player {
     
     if(!currentSong.equals(playlist0)){
       currentSong.pause();
+      parentDevice.mySenderReceiver.resetCue();
       currentSong = playlist0;
     } 
 

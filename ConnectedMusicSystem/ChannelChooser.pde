@@ -1,9 +1,9 @@
 class ChannelChooser implements Interactive {
 
-  int CCWidth;
-  int CCHeight;
-  int CCx;
-  int CCy;
+  float CCWidth;
+  float CCHeight;
+  float CCx;
+  float CCy;
   color defaultColor;
   color hoverColor;
   color activeColor; 
@@ -18,12 +18,12 @@ class ChannelChooser implements Interactive {
   
   SharingToggle sharingToggle;
 
-  ChannelChooser(int x, int y, int w, int h) {
+  ChannelChooser(float x, float y, float w, float h) {
 
     CCWidth = w/3;
     CCHeight = h/2;
     CCx = x-CCWidth;
-    CCy = y+h-CCHeight;
+    CCy = y+h/6;
 
     defaultColor = color(255, 247, 107);
     hoverColor = color(255, 255, 127);
@@ -54,6 +54,8 @@ class ChannelChooser implements Interactive {
     }
     
     sharingToggle.display();
+    
+    
   }
 
   void update() {
@@ -89,15 +91,15 @@ class ChannelChooser implements Interactive {
 
   class SharingToggle implements Interactive {
 
-    int stX;
-    int stY;
-    int stW;
-    int stH;
+    float stX;
+    float stY;
+    float stW;
+    float stH;
     int borderWidth = 2;
     boolean isOn;
     boolean mouseOver;
 
-    SharingToggle(int x, int y, int w, int h) {
+    SharingToggle(float x, float y, float w, float h) {
 
       stW = w/2;
       stH = w/2;
@@ -147,15 +149,15 @@ class ChannelChooser implements Interactive {
   class FlipSwitch implements Interactive {
 
     int switchID;
-    int FSWidth;
-    int FSHeight;
-    int FSx;
-    int FSy;
+    float FSWidth;
+    float FSHeight;
+    float FSx;
+    float FSy;
     int borderWidth = 2;
     boolean mouseOver;
     boolean isOn;
 
-    FlipSwitch(int x, int y, int w, int h, int ID) {
+    FlipSwitch(float x, float y, float w, float h, int ID) {
       switchID = ID;
 
       FSWidth = w;

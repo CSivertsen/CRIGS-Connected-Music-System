@@ -4,28 +4,39 @@ import nl.tue.id.oocsi.client.behavior.*;
 import processing.serial.*;
 
 int numVirtualDevices = 2;
-int padding = 500;
+int padding = 700;
+float x;
+float y;
+
 MusicDevice[] devices;
 //Move minim til MusicDevice;
 Minim minim;
 Serial serial;
+PImage logo;
+PFont heading; 
 
 long lastClick; 
 
 void setup(){
-  size(1900,600);
+  fullScreen();
+  float x = width*0.1;
+  float y = height*0.4;
+  
+  heading = createFont("Montserrat", 80);
+  
+  logo = loadImage("CRIGSlogo.png");
 
   devices = new MusicDevice[numVirtualDevices+1];
   
   //Initiating first device with serialInterface
-  devices[0] = new MusicDevice(100, height/5, false);
+  devices[0] = new MusicDevice(x, y, false);
   
   //Initiating virtual devices
   for (int i = 1; i < devices.length; i++){
-    devices[i] = new MusicDevice(width/6*2*i+100, height/5, false);  
+    devices[i] = new MusicDevice(width/6*2*i+x, y, false);  
   }
  
-    minim = new Minim(this);
+    minim = new Minim(this); //<>//
     
     //String portName = Serial.list()[0];
     //serial = new Serial(this, portName, 9600);
@@ -33,13 +44,20 @@ void setup(){
 }
 
 void draw(){
-  background(150);
+  background(247, 243, 243);
+  
+  image(logo, x, height*0.05);
+  textSize(80);
+  textFont(heading);
+  fill(0);
+  text("Music System", x + width*0.4, y + height*0.1); 
 
   for (int i = 0; i < devices.length; i++) {
     devices[i].update(); //<>//
     devices[i].display();
   }
   
+
 }
 
 void mouseReleased() {

@@ -1,5 +1,6 @@
 class MusicDevice implements Interactive {
 
+  VolumeGUI myVolumeGUI;
   PlayerInterface myPlayerInterface;
   PlaylistInterface myPlaylistInterface;
   ChannelChooser myChannelChooser;
@@ -9,15 +10,15 @@ class MusicDevice implements Interactive {
   DisturbanceController myDisturbanceController;
   DisturbanceGUI myDisturbanceGUI;
   SerialInterface mySerialInterface;
-  
-  int deviceWidth = 300;
-  int deviceHeight = 450;
-  int deviceX;
-  int deviceY;
-  
+
+  float deviceWidth = 300;
+  float deviceHeight = 450;
+  float deviceX;
+  float deviceY;
+
   boolean hasPhysical;
 
-  MusicDevice(int x, int y, boolean hasPhysical) {
+  MusicDevice(float x, float y, boolean hasPhysical) {
 
     deviceX = x;
     deviceY = y;
@@ -25,7 +26,8 @@ class MusicDevice implements Interactive {
     myPlayerInterface = new PlayerInterface(deviceX, deviceY, deviceWidth, deviceHeight, this);
     myPlaylistInterface = new PlaylistInterface(deviceX, deviceY, deviceWidth, deviceHeight, this);
     myDisturbanceGUI = new DisturbanceGUI(deviceX, deviceY, deviceWidth, deviceHeight, this);
-    
+    myVolumeGUI = new VolumeGUI(deviceX, deviceY, deviceWidth, deviceHeight, this);
+
     myPlaylist = new Playlist(this);
     myPlayer = new Player(this);
     myChannelChooser = new ChannelChooser(deviceX, deviceY, deviceWidth, deviceHeight);
@@ -33,9 +35,9 @@ class MusicDevice implements Interactive {
     myDisturbanceController = new DisturbanceController(this);
 
     myChannelChooser.setSenderReceiver(mySenderReceiver);
-    
-    if(hasPhysical){
-    mySerialInterface = new SerialInterface(this);
+
+    if (hasPhysical) {
+      mySerialInterface = new SerialInterface(this);
     }
   }
 
@@ -48,16 +50,19 @@ class MusicDevice implements Interactive {
     myPlaylistInterface.display();
     myChannelChooser.display();
     myDisturbanceGUI.display();
+    myVolumeGUI.display();
+
   }
 
   public void update() {
     myPlayerInterface.update();
     myPlaylistInterface.update();
+    myVolumeGUI.update();
     myChannelChooser.update();
     myDisturbanceGUI.update();
     mySenderReceiver.update();
     myPlayer.update();
-    if(hasPhysical){
+    if (hasPhysical) {
       mySerialInterface.update();
     }
   }
@@ -67,7 +72,7 @@ class MusicDevice implements Interactive {
     myPlaylistInterface.releaseEvent();
     myChannelChooser.releaseEvent();
   }
-  
+
   public void clickEvent() {
     myPlaylistInterface.clickEvent();
     myPlayerInterface.clickEvent();
@@ -76,5 +81,6 @@ class MusicDevice implements Interactive {
   public void scrollEvent(float val) {
     myPlayerInterface.scrollEvent(val);
     myDisturbanceGUI.scrollEvent(val);
+    myVolumeGUI.scrollEvent(val);
   }
 }

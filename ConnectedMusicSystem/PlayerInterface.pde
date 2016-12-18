@@ -1,21 +1,19 @@
 class PlayerInterface implements Interactive {
 
-  int PWidth;
-  int PHeight;
-  int Px;
-  int Py;
-  int borderWidth = 2;
-  int padding = 5;
+  float PWidth;
+  float PHeight;
+  float Px;
+  float Py;
+  float borderWidth = 2;
+  float padding = 5;
   int stepXOffset;
   boolean mouseOver;
   color defaultColor; 
   color inactiveColor; 
   color hoverColor; 
   MusicDevice parentDevice;
-  float currentGain;
-  float gainDisplayed;
 
-  PlayerInterface(int x, int y, int w, int h, MusicDevice device) {
+  PlayerInterface(float x, float y, float w, float h, MusicDevice device) {
 
     PWidth = w/2;
     PHeight = h/6;
@@ -45,21 +43,10 @@ class PlayerInterface implements Interactive {
     rect(Px+stepXOffset, Py, PWidth-borderWidth, PHeight-borderWidth);
 
     fill(255);
+    textSize(12);
     text(parentDevice.myPlayer.currentSong.getTitle(), Px+padding+stepXOffset, Py+padding);
     text(parentDevice.myPlayer.currentSong.getArtist(), Px+padding+stepXOffset, Py+20);
 
-    if (parentDevice.myPlayer.currentSong.isPlaying()) {
-      noFill();
-      strokeWeight(5);
-      stroke(defaultColor);
-      ellipseMode(CENTER);
-
-      gainDisplayed = map(currentGain, -80, 14, 0, 10);
-
-      for (int i = 0; i <= gainDisplayed; i++) {
-        ellipse(Px+PWidth/2, Py+PHeight/2, PWidth*(1.5+(i*0.5)), PWidth*(1.5+(i*0.5)));
-      }
-    }
   }
 
   void update() {
@@ -87,7 +74,7 @@ class PlayerInterface implements Interactive {
 
   void clickEvent() {
     if (mouseOver && mouseButton == LEFT) {
-      stepXOffset = 20;
+      stepXOffset = 40;
     } else if (mouseOver && mouseButton == RIGHT) {
       if (parentDevice.myPlayer.isPlaying()) {
         parentDevice.myPlayer.pause(true);
@@ -99,11 +86,11 @@ class PlayerInterface implements Interactive {
 
   void scrollEvent(float val) {
 
-    if (mouseOver) {
+    /*if (mouseOver) {
       currentGain = parentDevice.myPlayer.getGain();
       currentGain += val;
       parentDevice.myPlayer.setGain(currentGain);    
       println(currentGain);
-    }
+    }*/
   }
 }

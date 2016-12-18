@@ -90,6 +90,10 @@ public class SenderReceiver { //<>//
      } 
      sharedIDPlaylists[channelID][sharedIDPlaylists[channelID].length-1].set("0");
   }  
+  
+  public void resetCue() {
+    sharedSongPos[channelID].set(0);
+  }
 
   public void pulse() {
     //println("pulse");

@@ -2,14 +2,14 @@ class PlaylistInterface implements Interactive {
 
   ListStep[] steps;
   Playlist containedPlaylist;
-  int PWidth;
-  int PHeight;
-  int Px;
-  int Py;
+  float PWidth;
+  float PHeight;
+  float Px;
+  float Py;
   int listLength = 6;
   MusicDevice parentDevice;
 
-  PlaylistInterface(int x, int y, int w, int h, MusicDevice device) {
+  PlaylistInterface(float x, float y, float w, float h, MusicDevice device) {
 
     PWidth = w/2;
     PHeight = h/3*2;
@@ -55,16 +55,16 @@ class PlaylistInterface implements Interactive {
   class ListStep implements Interactive {
 
     int listStepID;
-    int LSWidth;
-    int LSHeight;
-    int LSx;
-    int LSy;
-    int borderWidth = 2;
-    int padding = 5;
+    float LSWidth;
+    float LSHeight;
+    float LSx;
+    float LSy;
+    float borderWidth = 2;
+    float padding = 5;
     int stepXOffset;
     boolean mouseOver;
 
-    ListStep(int x, int y, int w, int h, int ID) {
+    ListStep(float x, float y, float w, float h, int ID) {
 
       listStepID = ID;
       LSWidth = w;
@@ -89,6 +89,7 @@ class PlaylistInterface implements Interactive {
       rect(LSx+stepXOffset, LSy, LSWidth-borderWidth, LSHeight-borderWidth);
 
       fill(255);
+      textSize(12);
       textAlign(LEFT, TOP);
       text(containedPlaylist.getSong(listStepID+1).getTitle(), LSx+padding+stepXOffset, LSy);
       text(containedPlaylist.getSong(listStepID+1).getArtist(), LSx+padding+stepXOffset, LSy+13);
@@ -118,7 +119,7 @@ class PlaylistInterface implements Interactive {
 
     void clickEvent() {
       if (mouseOver) {
-        stepXOffset = 20;
+        stepXOffset = 40;
       }
     }
   }

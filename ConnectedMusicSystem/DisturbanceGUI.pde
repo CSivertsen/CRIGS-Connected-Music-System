@@ -1,16 +1,16 @@
 class DisturbanceGUI implements Interactive {
 
   //For disturbance actuator
-  int daWidth;
-  int daHeight;
-  int daX;
-  int daY;
+  float daWidth;
+  float daHeight;
+  float daX;
+  float daY;
 
   //For tolerance setter
-  int dWidth;
-  int dHeight;
-  int dX;
-  int dY;
+  float dWidth;
+  float dHeight;
+  float dX;
+  float dY;
   int borderWidth = 2;
   float circleYOffset; 
 
@@ -21,12 +21,12 @@ class DisturbanceGUI implements Interactive {
 
   MusicDevice parentDevice;
 
-  DisturbanceGUI(int x, int y, int w, int h, MusicDevice device) {
+  DisturbanceGUI(float x, float y, float w, float h, MusicDevice device) {
 
-    daWidth = w;
-    daHeight = h/6;
+    daWidth = w/2;
+    daHeight = h/2;
     daX = x;
-    daY = y;
+    daY = y+h/2;
 
     dWidth = w/2;
     dHeight = w/2; 
@@ -41,7 +41,7 @@ class DisturbanceGUI implements Interactive {
 
   void update() {
     int tempTolerance = parentDevice.myDisturbanceController.getTolerance();
-    circleYOffset = -map(tempTolerance, 0, 100, 0, dHeight);
+    circleYOffset = map(tempTolerance, 0, 100, 0, dHeight);
 
     if (mouseX >= dX && mouseX <= dX + dWidth && mouseY >= dY + circleYOffset && mouseY <= dY + dHeight) {
       mouseOver = true;
@@ -57,7 +57,8 @@ class DisturbanceGUI implements Interactive {
 
     //Drawing disturbance actuator
     int tempTurnDown = parentDevice.myDisturbanceController.turnDownLevel;
-    fill(67, 147, 178);
+    fill(255);
+    //fill(67, 147, 178);
     rect(daX, daY, daWidth-borderWidth, daHeight-borderWidth);
     
     ellipseMode(CORNER);
