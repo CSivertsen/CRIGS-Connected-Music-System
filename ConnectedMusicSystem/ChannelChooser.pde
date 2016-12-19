@@ -119,16 +119,19 @@ class ChannelChooser implements Interactive {
     }
 
     void releaseEvent() {
-
+      
       if (mouseOver && isOn == false) {
         isOn = true;
         isEditable = true;
-        oldChannelID = channelID;
+        mySenderReceiver.resubscribe(0);
+        oldChannelID = 0;
       } else if (mouseOver && isOn == true) {
         isOn = false;
         isEditable = false;
         wasConfirmed = true;
       }
+       
+      
     }
 
     void display() {

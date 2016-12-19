@@ -68,7 +68,7 @@ class SerialInterface {
           readCycle = -1;
         }
       } else if (inString.equals("S")) { 
-        println("Sending");
+        //println("Sending");
         myPort.write(parentDevice.myPlayer.currentSong.getArtist() + '\n');
         myPort.write(parentDevice.myPlayer.currentSong.getTitle() + '\n');
         myPort.write(parentDevice.myDisturbanceController.turnDownLevel + '\n');
@@ -128,7 +128,7 @@ class SerialInterface {
         oldToleranceLevel = inToleranceLevel;
       }
       // print the values (for debugging purposes only):
-      //println(readCycle + ": " + inString);
+      println(readCycle + ": " + inString);
       if (readCycle >= 9) {
         readCycle = 0;
       } else {

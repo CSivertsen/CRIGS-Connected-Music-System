@@ -12,8 +12,8 @@
 #define PIXELPIN 3
 
 // If using software SPI (the default case):
-#define OLED_MOSI   9
-#define OLED_CLK   10
+#define OLED_MOSI   9 //SDA, D1
+#define OLED_CLK   10 //SCL, D0
 #define OLED_DC    11
 #define OLED_CS    12
 #define OLED_RESET 13
@@ -35,7 +35,7 @@ Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIXELPIN, NEO_GRB + NEO_KHZ800);
 
-int LDRpins[] = {A0, A1, A2, A3};
+int LDRpins[] = {A2, A3, A4, A5};
 int LDRvalues[4];
 int lightThreshold = 100;
 boolean ledsIsOn[4];
@@ -96,7 +96,7 @@ void loop() {
 
 void checkSwitches() {
 
-  for (int i = 0; i < 1; i++) {
+  for (int i = 0; i < 7; i++) {
     slotsAreOpen[i] = digitalRead(i + 22);
   }
 
@@ -111,11 +111,11 @@ void drawScreen(void) {
   display.println(title);
   display.println(artist);
   //For debugging
-  if (!slotsAreOpen[0]) {
+  /*if (!slotsAreOpen[0]) {
     display.println("Slot 1 is closed");
   } else {
     display.println("Slot 1 is open");
-  }
+  }*/
   display.display();
 }
 
@@ -135,7 +135,7 @@ void channelSelection() {
     }
     channelID = countChannels;
   } else {
-
+    channelID = 0;
     for (int i = 0; i < NUMPIXELS; i++) {
       LDRvalues[i] = analogRead(LDRpins[i]);
       if (LDRvalues[i] < lightThreshold && !ledsIsOn[i] && !isRegistered[i] ) {
@@ -178,14 +178,14 @@ void channelSelection() {
 void sendData() {
 
   // read first analog input, divide by 4 to make the range 0-255:
-  volumeLevel = analogRead(A0) / 4;
+  volumeLevel = analogRead(A0);
   delay(10);
-  toleranceLevel = analogRead(A1) / 4;
+  toleranceLevel = analogRead(A1);
 
   //for debugging
-  volumeLevel = 100;
-  toleranceLevel = 100;
-
+  /*volumeLevel = 100;
+  toleranceLevel = 100;*/
+  
   for (int i = 0; i < NUMSLOTS; i++) {
     String str = String(slotsAreOpen[i]);
     Serial.print(str);

@@ -29,7 +29,7 @@ void setup(){
   devices = new MusicDevice[numVirtualDevices+1];
   
   //Initiating first device with serialInterface
-  devices[0] = new MusicDevice(x, y, false);
+  devices[0] = new MusicDevice(x, y, true);
   
   //Initiating virtual devices
   for (int i = 1; i < devices.length; i++){
@@ -38,8 +38,8 @@ void setup(){
  
     minim = new Minim(this); //<>//
     
-    //String portName = Serial.list()[0];
-    //serial = new Serial(this, portName, 9600);
+    String portName = Serial.list()[0];
+    serial = new Serial(this, portName, 9600);
          
 }
 
@@ -81,10 +81,11 @@ void mouseWheel(MouseEvent event) {
 }
 
 void serialEvent(Serial event){
-  //devices[0].mySerialInterface.serialEvent(event);
+  devices[0].mySerialInterface.serialEvent(event);
 }
 
-/*void handleOOCSIEvent(OOCSIEvent message){
+/*
+void handleOOCSIEvent(OOCSIEvent message){
     for (MusicDevice device : devices) {
     device.mySenderReceiver.handleOOCSIEvent(message);
   }
