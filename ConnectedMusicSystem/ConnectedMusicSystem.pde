@@ -18,7 +18,7 @@ PFont heading;
 long lastClick; 
 
 void setup(){
-  fullScreen();
+  fullScreen(2);
   float x = width*0.1;
   float y = height*0.4;
   

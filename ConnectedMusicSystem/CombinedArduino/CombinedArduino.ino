@@ -9,14 +9,12 @@
 #include <avr/power.h>
 #endif
 
-#define PIXELPIN 3
-
 // If using software SPI (the default case):
-#define OLED_MOSI   9 //SDA, D1
-#define OLED_CLK   10 //SCL, D0
-#define OLED_DC    11
-#define OLED_CS    12
-#define OLED_RESET 13
+#define OLED_MOSI   9 //orange. SDA, D1
+#define OLED_CLK   10 //pink, SCL, D0
+#define OLED_DC    11 //brown
+#define OLED_CS    12 //purple
+#define OLED_RESET 7 //white
 Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 #if (SSD1306_LCDHEIGHT != 64)
@@ -25,7 +23,8 @@ Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 // How many NeoPixels are attached to the Arduino?
 #define NUMPIXELS 4
-#define ANTENNAPIN 41
+#define PIXELPIN 4
+#define ANTENNAPIN 2
 
 //How many slots are there
 #define NUMSLOTS 7
@@ -35,7 +34,7 @@ Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIXELPIN, NEO_GRB + NEO_KHZ800);
 
-int LDRpins[] = {A2, A3, A4, A5};
+int LDRpins[] = {A3, A4, A5, A6};
 int LDRvalues[4];
 int lightThreshold = 100;
 boolean ledsIsOn[4];
@@ -46,7 +45,7 @@ int volumeLevel = 0;
 int toleranceLevel = 0;
 
 boolean slotsAreOpen[NUMSLOTS];
-int slotPins[] = {22, 23, 24, 25, 26, 27, 28};
+int slotPins[] = {22, 23, 24, 25, 26, 27};
 
 int delayVal = 50; // delay
 
@@ -61,7 +60,7 @@ int countChannels = 0;
 
 void setup() {
 
-  analogReadResolution(8);
+//  analogReadResolution(8);
   Serial.begin(9600);
 
   pixels.begin();
@@ -178,9 +177,9 @@ void channelSelection() {
 void sendData() {
 
   // read first analog input, divide by 4 to make the range 0-255:
-  volumeLevel = analogRead(A0);
+  volumeLevel = analogRead(A1) / 4;
   delay(10);
-  toleranceLevel = analogRead(A1);
+  toleranceLevel = analogRead(A0) / 4;
 
   //for debugging
   /*volumeLevel = 100;
