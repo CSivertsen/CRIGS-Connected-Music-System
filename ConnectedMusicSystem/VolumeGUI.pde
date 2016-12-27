@@ -34,7 +34,7 @@ class VolumeGUI implements Interactive {
 
   void update() {
     currentGain = parentDevice.myPlayer.getGain();
-    volumeXOffset = constrain(-map(currentGain, -15, 14, 0, vW/2), -vW/2, 0);
+    volumeXOffset = constrain(-map(currentGain, -15, 10, 0, vW/2), -vW/2, 0);
 
     if (mouseX >= vX + volumeXOffset && mouseX <= vX + vW + volumeXOffset && mouseY >= vY  && mouseY <= vY + vH) {
       mouseOver = true;

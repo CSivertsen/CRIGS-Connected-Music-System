@@ -112,7 +112,7 @@ class SerialInterface {
         }
 
         if (oldVolumeLevel != inVolumeLevel) {
-          float gain = map(inVolumeLevel, 0, 180, 0, 20);
+          float gain = map(inVolumeLevel, 0, 180, -15, 10);
           parentDevice.myPlayer.setGain(gain);
           //Set volume to new level
         }

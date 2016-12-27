@@ -15,11 +15,13 @@ class MusicDevice implements Interactive {
   float deviceHeight = 450;
   float deviceX;
   float deviceY;
+  String deviceLoc;
 
   boolean hasPhysical;
 
-  MusicDevice(float x, float y, boolean hasPhysical) {
-
+  MusicDevice(float x, float y, boolean hasPhysical, String location) {
+    
+    deviceLoc = location;
     deviceX = x;
     deviceY = y;
 
@@ -51,6 +53,10 @@ class MusicDevice implements Interactive {
     myChannelChooser.display();
     myDisturbanceGUI.display();
     myVolumeGUI.display();
+    
+    fill(0);
+    textSize(22);
+    text(deviceLoc, deviceX, deviceY-(deviceY*0.1)); 
 
   }
 

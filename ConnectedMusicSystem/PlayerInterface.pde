@@ -46,6 +46,9 @@ class PlayerInterface implements Interactive {
     textSize(12);
     text(parentDevice.myPlayer.currentSong.getTitle(), Px+padding+stepXOffset, Py+padding);
     text(parentDevice.myPlayer.currentSong.getArtist(), Px+padding+stepXOffset, Py+20);
+    if (parentDevice.myPlayer.currentSong.isPaused){
+      text("-Paused-", Px+padding+stepXOffset, Py+40); 
+    }
 
   }
 

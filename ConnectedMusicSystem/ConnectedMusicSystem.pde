@@ -29,12 +29,13 @@ void setup(){
   devices = new MusicDevice[numVirtualDevices+1];
   
   //Initiating first device with serialInterface
-  devices[0] = new MusicDevice(x, y, true);
-  
+  devices[0] = new MusicDevice(x, y, true, "Laplace");
+  devices[1] = new MusicDevice(width/6*2*1+x, y, false, "Living Room");  
+  devices[2] = new MusicDevice(width/6*2*2+x, y, false, "Kitchen");  
   //Initiating virtual devices
-  for (int i = 1; i < devices.length; i++){
+  /*for (int i = 1; i < devices.length; i++){
     devices[i] = new MusicDevice(width/6*2*i+x, y, false);  
-  }
+  }*/
  
     minim = new Minim(this); //<>//
     

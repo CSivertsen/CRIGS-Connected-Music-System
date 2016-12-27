@@ -153,6 +153,14 @@ class ChannelChooser implements Interactive {
       }
           
       ellipse(stX, stY, stW-borderWidth, stH-borderWidth);
+      fill(0);
+      textAlign(RIGHT);
+      if(isOn){
+        text("Unlocked", stX-15, stY+stH+10, stW-borderWidth+10, stH-borderWidth);
+      } else {
+        text("Locked", stX-15, stY+stH+10, stW-borderWidth+10, stH-borderWidth);
+      }
+     textAlign(LEFT, TOP);
     }
   }
 
